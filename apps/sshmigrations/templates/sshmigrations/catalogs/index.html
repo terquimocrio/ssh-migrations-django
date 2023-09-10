@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row row-cols-3 row-cols-md-2 g-2">
+    {% for catalog in catalogs %}
+    <div class="col">
+        <a href="{{catalog.url}}" class="link">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">{{catalog.name}}</h5>
+                  <p class="card-text">{{catalog.description}}</p>
+                </div>
+              </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+    
+{% endblock %}
