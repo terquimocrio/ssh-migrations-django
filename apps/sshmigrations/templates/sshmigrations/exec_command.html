@@ -5,4 +5,14 @@
         {{form}}
         <input type="submit" class="btn btn-primary mt-3" value="Exec">
     </form>
+    {% if success_message %}
+        <h3>Stdout</h3>
+        <p>{{success_message}}</p>
+    {% endif %}
+
+    {% if error_message %}
+        <h3>Stderr</h3>
+        <p>{{error_message}}</p>
+    {% endif %}
+
 {% endblock %}

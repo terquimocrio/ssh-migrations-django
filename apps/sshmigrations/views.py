@@ -54,7 +54,7 @@ class MigrationsView(FormView):
         print(f"migrations: {makemigrations_[0]}")
         print(f"migrate: {migrate_[0]}")
 
-        print('ERROR MESSAGES')
+        print('Error messages')
 
         print(f"merge: {merge[1]}")
         print(f"migrations: {makemigrations_[1]}")
@@ -78,7 +78,15 @@ class ExecCommandView(FormView):
         command = request.POST['command']
         stdin, stdout, stderr = connection.exec_command(command)
 
-        print(stdout.read().decode('utf-8'))
-        print(stderr.read().decode('utf-8'))
+        error_message = stderr.read().decode('utf-8')
+        success_message = stdout.read().decode('utf-8')
 
-        return super().post(request, *args, **kwargs)
+        print(f"error_message: {error_message}")
+        print(f"success_message: {success_message}")
+
+        context = self.get_context_data(**kwargs)
+        context['form'] = self.form_class
+        context['error_message'] = error_message
+        context['success_message'] = success_message
+
+        return render(request, self.template_name, context=context)
