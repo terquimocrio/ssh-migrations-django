@@ -7,6 +7,8 @@ def get_all_branches_as_tuple(repo_owner, repo_name, access_token):
 
     url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/branches'
 
+    print("URL = ", url)
+
     headers = {'Authorization': f'token {access_token}'}
 
     response = requests.get(url, headers=headers)

@@ -13,4 +13,7 @@ print(BRANCHES_CHOICES)
 
 class BranchesForm(forms.Form):
     branches = forms.ChoiceField(choices=BRANCHES_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+
+class CommandForm(forms.Form):
+    command = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     

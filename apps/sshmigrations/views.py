@@ -6,7 +6,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views.generic import FormView
 
-from .forms import BranchesForm
+from .forms import BranchesForm, CommandForm
 from .utils import makemigrations, merge_branch, migrate, ssh_connection
 
 # Create your views here.
@@ -38,15 +38,47 @@ class MigrationsView(FormView):
             PROJECT_PATH, request.POST['branches'], connection)
         migrate_ = migrate(PROJECT_PATH, request.POST['branches'], connection)
 
-        logging.info('Successful messages')
-        logging.info(f"merge: {merge[0]}")
-        logging.info(f"migrations: {makemigrations_[0]}")
-        logging.info(f"migrate: {migrate_[0]}")
+        # logging.info('Successful messages')
+        # logging.info(f"merge: {merge[0]}")
+        # logging.info(f"migrations: {makemigrations_[0]}")
+        # logging.info(f"migrate: {migrate_[0]}")
 
-        logging.info('Error messages')
+        # logging.info('ERROR MESSAGES')
 
-        logging.error(f"merge: {merge[1]}")
-        logging.error(f"migrations: {makemigrations_[1]}")
-        logging.error(f"migrate: {migrate_[1]}")
+        # logging.error(f"merge: {merge[1]}")
+        # logging.error(f"migrations: {makemigrations_[1]}")
+        # logging.error(f"migrate: {migrate_[1]}")
+
+        print('Successful messages')
+        print(f"merge: {merge[0]}")
+        print(f"migrations: {makemigrations_[0]}")
+        print(f"migrate: {migrate_[0]}")
+
+        print('ERROR MESSAGES')
+
+        print(f"merge: {merge[1]}")
+        print(f"migrations: {makemigrations_[1]}")
+        print(f"migrate: {migrate_[1]}")
+
+        return super().post(request, *args, **kwargs)
+
+class ExecCommandView(FormView):
+    form_class = CommandForm
+    template_name = 'sshmigrations/exec_command.html'
+    success_url = '/exec_command'
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+
+        connection = ssh_connection(
+            SSH_PRIVATE_KEY_PATH, SSH_HOST, SSH_PORT, SSH_USERNAME)
+
+        command = request.POST['command']
+        stdin, stdout, stderr = connection.exec_command(command)
+
+        print(stdout.read().decode('utf-8'))
+        print(stderr.read().decode('utf-8'))
 
         return super().post(request, *args, **kwargs)
