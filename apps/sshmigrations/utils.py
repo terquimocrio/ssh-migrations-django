@@ -26,6 +26,29 @@ def get_all_branches_as_tuple(repo_owner, repo_name, access_token):
         logging.error(f"Error retrieving branches. {response.json()}")
 
         return None
+    
+def get_all_branches_as_json(repo_owner, repo_name, access_token):
+    
+        url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/branches'
+    
+        print("URL = ", url)
+    
+        headers = {'Authorization': f'token {access_token}'}
+    
+        response = requests.get(url, headers=headers)
+    
+        if response.status_code == 200:
+    
+            logging.info(f"Successfully retrieved branches. {response.json()}")
+    
+            branches = response.json()
+            return branches
+    
+        else:
+            
+            logging.error(f"Error retrieving branches. {response.json()}")
+    
+            return None
 
 
 def ssh_connection(private_key_path, host, port, username):
@@ -41,6 +64,8 @@ def ssh_connection(private_key_path, host, port, username):
     return client
 
 
+
+
 def merge_branch(project_path, branch, connection, main_branch='main'):
 
     cmd_1 = f"cd {project_path} && source venv/bin/activate && git checkout {main_branch} && git pull origin {main_branch}"
@@ -50,6 +75,8 @@ def merge_branch(project_path, branch, connection, main_branch='main'):
 
     _stdin, _stdout, _stderr = connection.exec_command(
         f"{cmd_1} && {cmd_2} && {cmd_3} && {cmd_4}")
+
+    # _stdin, _stdout, _stderr = connection.exec_command(f"{cmd_1}")
 
     return _stdout.read().decode('utf-8'), _stderr.read().decode('utf-8')
 
@@ -68,3 +95,5 @@ def migrate(proyect_path, branch, connection):
         f"cd {proyect_path} && source venv/bin/activate && python3 manage.py migrate")
 
     return _stdout.read().decode('utf-8'), _stderr.read().decode('utf-8')
+
+

@@ -4,17 +4,15 @@
 <table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
+        <th scope="col">Name</th>
+        <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
         {% for connection in ssh_connections %}    
         <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
+          <th scope="row">{{connection.ssh_name}}</th>
+          <th scope="row"><a href="{% url 'sshmigrations:update_ssh_connection' connection.pk %}"><i class="fa-solid fa-pen"></i></a></th>
         </tr>
         {% endfor %}
     </tbody>

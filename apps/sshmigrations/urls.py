@@ -24,4 +24,6 @@ urlpatterns = [
     path('catalogs/ghconnection/create/', views.CreateGHConnectionView.as_view(), name='create_gh_connection'),
     path('catalogs/ghconnection/update/<int:pk>/', views.UpdateGHConnectionView.as_view(), name='update_gh_connection'),
     
+    # API
+    path('api/get_branches/<int:pk>', views.BranchesView.as_view(), name='get_branches'),
 ]

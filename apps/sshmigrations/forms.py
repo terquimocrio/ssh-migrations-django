@@ -11,7 +11,8 @@ ACCESS_TOKEN = os.environ.get('ACCESS_TOKEN')
 BRANCHES_CHOICES = get_all_branches_as_tuple(REPO_OWNER, REPO_NAME, ACCESS_TOKEN)
 
 class BranchesForm(forms.Form):
-    branches = forms.ChoiceField(choices=BRANCHES_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    project = forms.ModelChoiceField(queryset=Project.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
+    # branches = forms.ChoiceField(choices=(('', 'Select branch'),), widget=forms.Select(attrs={'class': 'form-control'}))
 
 class CommandForm(forms.Form):
     command = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))

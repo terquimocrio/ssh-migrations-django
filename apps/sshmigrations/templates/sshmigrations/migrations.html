@@ -1,8 +1,46 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %}{% load static %}
 {% block content %}
     <form method="POST">
         {% csrf_token %}
         {{form}}
+        <label for="branches">Branches:</label>
+        <select name="branches" id="id_branches" class="form-control">
+            <option value>Select branch</option>
+        </select>
         <input type="submit" class="btn btn-primary mt-3" value="Merge and migrate">
     </form>
+    {% if success_message_merge %}
+        <h3>Stdout merge</h3>
+        <p>{{success_message_merge}}</p>
+    {% endif %}
+
+    {% if error_message_merge %}
+        <h3>Stderr merge</h3>
+        <p>{{error_message_merge}}</p>
+    {% endif %}
+
+    {% if success_message_migration %}
+        <h3>Stdout migrations</h3>
+        <p>{{success_message_migration}}</p>
+    {% endif %}
+
+    {% if error_message_migration %}
+        <h3>Stderr migration</h3>
+        <p>{{error_message_migration}}</p>
+    {% endif %}
+
+    {% if success_message_migrate %}
+        <h3>Stdout migrate</h3>
+        <p>{{success_message_migrate}}</p>
+    {% endif %}
+
+    {% if error_message_merge %}
+        <h3>Stderr migrate</h3>
+        <p>{{error_message_mergrate}}</p>
+    {% endif %}
+
+
 {% endblock %}
+{% block javascript %}
+<script src="{% static 'assets/js/migrations.js' %}"></script>
+{% endblock javascript %}
